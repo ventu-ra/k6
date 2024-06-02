@@ -1,6 +1,4 @@
-### README
-
-## k6 Load Tests
+# k6 Load Tests
 
 Este projeto configura um ambiente local para executar testes de carga em uma API de registro de usuários, utilizando InfluxDB e Grafana para monitoramento de desempenho. O setup utiliza Docker Compose para gerenciar os serviços.
 
