@@ -59,7 +59,7 @@ GRAFANA_PASSWORD=admin123
 Para executar os testes de carga utilizando k6, utilize o seguinte comando:
 
 ```bash
-docker-compose run --rm -T k6 run -<tests/exemplo.js>
+docker-compose run --rm k6 run /tests/exemplo.js
 ```
 
 Este comando irá executar os testes de carga definidos no arquivo `exemplo.js` dentro do container k6 e enviar os resultados para o InfluxDB.
