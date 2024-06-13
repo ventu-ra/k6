@@ -59,6 +59,10 @@ Para garantir a compatibilidade e a melhor experiência, é recomendável utiliz
    - **InfluxDB:** Por padrão, o InfluxDB não possui uma interface web exposta. Interaja com ele via API em `http://localhost:8086`.
    - **Grafana:** Acesse o Grafana em `http://localhost:3000`.
 
+## Configurar o Grafana
+
+Para configurar o Grafana - Influxdb, consulte o [README.md](grafana/README.md) na pasta `grafana`.
+
 ## Executar os Testes de Carga
 
 Para executar os testes de carga utilizando k6, utilize o seguinte comando:
