@@ -1,19 +1,9 @@
 version: '3.9'
 
-networks:
-  k6:
-  grafana:
-
-
 services:
   influxdb:
     image: influxdb:1.8
-    networks:
-      - k6
-      - grafana
-    ports:
-      - '8086:8086'
-    # network_mode: host
+    network_mode: host
     volumes:
       - influxdb-storage:/var/lib/influxdb
     environment:
@@ -22,31 +12,44 @@ services:
       resources:
         limits:
           cpus: '2'
-          memory: '1G'
+          memory: 1G
 
   grafana:
-    image: grafana/grafana:latest
-    networks:
-      - grafana
-    ports:
-      - "3000:3000"
-    # network_mode: host
+    image: grafana/grafana
+    # ports:
+    #   - '3000:3000'
+    # networks:
+    #   - k6
+    network_mode: host
     volumes:
       - grafana-storage:/var/lib/grafana
-      - ./grafana-provisioning:/etc/grafana/provisioning
-      - ./grafana-dashboards:/var/lib/grafana/dashboards
+      - ./grafana:/etc/grafana/provisioning
     depends_on:
       - influxdb
     environment:
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_BASIC_ENABLED=false
-
     deploy:
       resources:
         limits:
           cpus: '0.5'
-          memory: '0.5GB'
+          memory: '0.5G'
+
+  k6:
+    image: grafana/k6
+    # networks:
+    #   - k6
+    # ports:
+    #   - "6565:6565"
+    network_mode: host
+    environment:
+      - K6_INFLUXDB_PUSH_INTERVAL=2s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: '1G'
 
   api:
     image: vntura/api_users:1.0
@@ -54,29 +57,14 @@ services:
       - NODE_ENV:production
     # networks:
     #   - k6
-    ports:
-      - "3333:3333"
+    # ports:
+    #   - "3333:3333"
+    network_mode: host
     deploy:
       resources:
         limits:
-          cpus: '0.25'
-          memory: '512M'
-
-  k6:
-    image: grafana/k6:latest
-    networks:
-      - k6
-    # network_mode: host
-    ports:
-      - "6565:6565"
-    environment:
-      - K6_OUT=influxdb=http://influxdb:8086/db0
-      - K6_INFLUXDB_PUSH_INTERVAL=2s
-    depends_on:
-      - influxdb
-    volumes:
-      - ./tests:/tests
-    entrypoint: [ "k6" ]
+          cpus: '1'
+          memory: '1G'
 
 volumes:
   influxdb-storage:
