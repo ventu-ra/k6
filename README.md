@@ -1,29 +1,42 @@
 # k6 Load Tests
 
-Este projeto configura um ambiente local para executar testes de carga em uma API de registro de usuários, utilizando InfluxDB e Grafana para monitoramento de desempenho. O setup utiliza Docker Compose para gerenciar os serviços.
+Este projeto configura um ambiente local para executar testes de carga em uma API de registro de usuários, utilizando [K6](https://grafana.com/docs/k6/latest/), [InfluxDB](https://www.influxdata.com/) e Grafana para monitoramento de desempenho. O setup utiliza Docker Compose para gerenciar os serviços.
 
-### Pré-requisitos
+## Pré-requisitos
 
 Antes de começar, certifique-se de ter os seguintes softwares instalados na sua máquina:
 
-- Docker
-- Docker Compose
+- [Git](https://git-scm.com/downloads)
+- [Docker](https://docs.docker.com/engine/install/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
-### Variáveis de Ambiente
+## Ambiente Recomendado
 
-Crie um arquivo `.env` no diretório raiz do projeto com as seguintes variáveis:
+Este projeto foi desenvolvido utilizando o sistema Fedora, mas pode ser executado em outros sistemas operacionais, como:
+
+- Qualquer distribuição Linux (Ubuntu, Debian, etc.)
+- macOS
+- Windows 10/11 (WSL 2 opcional)
+
+Para garantir a compatibilidade e a melhor experiência, é recomendável utilizar um desses sistemas operacionais.
+
+## Estrutura do Projeto
 
 ```plaintext
-
-INFLUXDB_USERNAME=admin123
-INFLUXDB_USERNAME=admin123
-INFLUXDB_PASSWORD=admin123
-GRAFANA_USERNAME=admin123
-GRAFANA_PASSWORD=admin123
-
+├── docker-compose.yml
+├── grafana
+│   └── datasource.yml
+├── LICENSE
+├── Makefile
+├── README.md
+├── script.sh
+└── tests
+    ├── exemplo.js
+    ├── exemplo_k6.js
+    └── teste.js
 ```
 
-### Passos para Executar o Projeto
+## Passos para Executar o Projeto
 
 1. **Clonar o repositório:**
 
@@ -32,15 +45,7 @@ GRAFANA_PASSWORD=admin123
    cd k6
    ```
 
-2. **Criar e configurar o arquivo `.env`:**
-
-   ```bash
-   touch .env
-   ```
-
-   Adicione as variáveis de ambiente necessárias conforme mencionado acima.
-
-3. **Iniciar os serviços:**
+2. **Iniciar os serviços:**
 
    ```bash
    docker-compose up -d
@@ -48,28 +53,28 @@ GRAFANA_PASSWORD=admin123
 
    Este comando iniciará todos os serviços definidos no arquivo `docker-compose.yml` em modo desacoplado.
 
-4. **Acessar os serviços:**
+3. **Acessar os serviços:**
 
    - **API:** A API de registro de usuários estará acessível em `http://localhost:3333`.
    - **InfluxDB:** Por padrão, o InfluxDB não possui uma interface web exposta. Interaja com ele via API em `http://localhost:8086`.
    - **Grafana:** Acesse o Grafana em `http://localhost:3000`.
 
-### Executar os Testes de Carga
+## Executar os Testes de Carga
 
 Para executar os testes de carga utilizando k6, utilize o seguinte comando:
 
 ```bash
-docker-compose run --rm k6 run /tests/exemplo.js
+docker-compose run --rm -T k6 run -<tests/exemplo_k6.js --out influxdb=http://localhost:8086/db0
 ```
 
 Este comando irá executar os testes de carga definidos no arquivo `exemplo.js` dentro do container k6 e enviar os resultados para o InfluxDB.
 
-### Monitoramento e Testes
+## Monitoramento e Testes
 
 - **Dashboard do Grafana:** Configure seu dashboard do Grafana para monitorar as métricas coletadas pelo InfluxDB.
 - **Testes de Carga com k6:** O serviço k6 está configurado para enviar os resultados dos testes de carga para o InfluxDB. Personalize e execute seus scripts k6 para realizar testes de carga na API.
 
-### Parar os Serviços
+## Parar os Serviços
 
 Para parar e remover todos os serviços em execução, use:
 
@@ -79,11 +84,10 @@ docker-compose down
 
 Isso irá parar todos os serviços e remover os containers.
 
-### Solução de Problemas
+## Solução de Problemas
 
 Se você encontrar algum problema:
 
-- Verifique se todas as variáveis de ambiente estão corretamente configuradas no arquivo `.env`.
 - Verifique os logs do Docker para quaisquer mensagens de erro usando:
 
   ```bash
@@ -92,6 +96,6 @@ Se você encontrar algum problema:
 
 - Verifique se as portas necessárias não estão sendo usadas por outras aplicações.
 
-### Conclusão
+## Conclusão
 
-Este setup fornece um ambiente completo para desenvolver, monitorar e testar a API de registro de usuários. Para quaisquer dúvidas ou suporte adicional, consulte a documentação do projeto ou entre em contato com os mantenedores do projeto.
+Este setup fornece um ambiente completo para desenvolver, monitorar e testar a APIs.
