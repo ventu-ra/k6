@@ -17,7 +17,7 @@ help: ## Exibe os comandos disponíveis
 	@awk 'BEGIN {FS = ":.*##"} /^[^@ \t]/ && /:.*##/ { sub(/^[ \t]+/, "", $$1); printf "  \033[36m%-25s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
 compose_up: ## Iniciar o serviço
-	@docker-compose up -d
+	@docker-compose up -d --build
 
 API: ## Para testar a API se esta cadastrando
 	@chmod +x ./script.sh && ./script.sh
@@ -33,7 +33,7 @@ run-k6: ## Executar testes k6. Uso: make run-k6 SCRIPT_PATH=tests/exemplo_k6.js
 	@$(K6_RUN_COMMAND)
 
 exemplo: ## Script de exemplo
-	@make run-k6 SCRIPT_PATH=tests/exemplo_k6.js
+	@make run-k6 SCRIPT_PATH=tests/exemplo.js
 
 compose_down: ## Parar e remover todos os contêineres
 	@docker-compose down
