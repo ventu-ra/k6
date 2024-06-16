@@ -16,7 +16,7 @@ help: ## Exibe os comandos disponíveis
 	@echo "Uso: make <alvo>"
 	@awk 'BEGIN {FS = ":.*##"} /^[^@ \t]/ && /:.*##/ { sub(/^[ \t]+/, "", $$1); printf "  \033[36m%-25s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
-start.dev: ## Iniciar o serviço em Dev
+compose_up: ## Iniciar o serviço
 	@docker-compose up -d
 
 API: ## Para testar a API se esta cadastrando
@@ -35,5 +35,5 @@ run-k6: ## Executar testes k6. Uso: make run-k6 SCRIPT_PATH=tests/exemplo_k6.js
 exemplo: ## Script de exemplo
 	@make run-k6 SCRIPT_PATH=tests/exemplo_k6.js
 
-stop: ## Parar e remover todos os contêineres
+compose_down: ## Parar e remover todos os contêineres
 	@docker-compose down
