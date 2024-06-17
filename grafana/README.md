@@ -29,5 +29,5 @@ Este documento explica como configurar o Grafana para monitorar os dados coletad
 
    - No menu lateral, clique em "+" e selecione "Import".
    - Você pode importar um dashboard existente fornecendo o ID do dashboard do Grafana.com ou carregando um arquivo JSON.
-   - Por exemplo, para importar o dashboard com ID 2587, digite 2587 e clique em "Load".
+   - Por exemplo, para importar o dashboard com ID 2587, digite 2587 ou 14801 e clique em "Load".
    - Após importar, configure o dashboard para usar o data source do InfluxDB configurado anteriormente.

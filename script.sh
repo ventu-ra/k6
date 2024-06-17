@@ -4,8 +4,8 @@
 URL="http://localhost:3333/signup"
 
 # Defina os dados de email e senha
-EMAIL="seuemail@example.com"
-PASSWORD="suasenha"
+EMAIL="test@example.com"
+PASSWORD="pwd123"
 
 # Envie o POST request
 curl -X POST $URL \

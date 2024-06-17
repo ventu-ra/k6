@@ -1,15 +1,16 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
+import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 
 export let options = {
   stages: [
-    { duration: '1s', target: 100 },
-    { duration: '2s', target: 200 },
-    { duration: '3s', target: 400 },
-    { duration: '4s', target: 800 },
-    { duration: '5s', target: 1200 },
-    { duration: '6s', target: 1600 },
-    { duration: '7s', target: 2000 },
+    { duration: '1m', target: 100 },
+    { duration: '2m', target: 200 },
+    { duration: '3m', target: 400 },
+    { duration: '4m', target: 800 },
+    { duration: '5m', target: 1200 },
+    { duration: '6m', target: 1600 },
+    { duration: '7m', target: 2000 },
   ],
   thresholds: {
     http_req_duration: ['p(95)<2000'], // 95% das requisições devem responder em até 2s
@@ -18,7 +19,22 @@ export let options = {
 };
 
 export default function () {
-  let res = http.get('http://localhost:3333/signup');
-  check(res, { 'status was 200': (r) => r.status == 200 });
+  const url = 'http://localhost:3333/signup'
+
+  const payload = JSON.stringify(
+    { email: `${uuidv4().substring(24)}@test.com`, password: 'pwd123' }
+  )
+
+  const headers = {
+    'headers': {
+      'Content-Type': 'application/json'
+    }
+  }
+  const res = http.post(url, payload, headers)
+  check(res, {
+    'status should be 201': (r) => r.status === 201
+  })
+
   sleep(1);
 }
+
